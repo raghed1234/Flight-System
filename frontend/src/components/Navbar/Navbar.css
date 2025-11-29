@@ -1,0 +1,84 @@
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.nav-container {
+width: 100%;
+padding: 15px 40px;
+background: #0a4da3;
+color: white;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+z-index: 2000;
+font-family: 'Montserrat', sans-serif;
+box-sizing: border-box;
+}
+
+.nav-center {
+display: flex;
+gap: 35px;
+list-style: none;
+font-size: 18px;
+font-weight: 500;
+}
+
+
+.nav-center li:hover {
+color: #cfe3ff;
+cursor: pointer;
+}
+
+
+.nav-left {
+font-size: 26px;
+font-weight: 700;
+letter-spacing: 1px;
+}
+
+
+.nav-center {
+display: flex;
+gap: 30px;
+list-style: none;
+font-size: 17px;
+}
+
+
+.nav-center li:hover {
+text-decoration: underline;
+cursor: pointer;
+}
+
+
+.nav-right .btn {
+padding: 8px 18px;
+margin-left: 10px;
+border: none;
+cursor: pointer;
+font-size: 16px;
+border-radius: 6px;
+transition: 0.3s;
+}
+
+
+.signin {
+background: white;
+color: #0a4da3;
+}
+.signin:hover {
+background: #021d44;
+}
+
+.signup{
+background: white;
+color: #0a4da3;
+}
+
+.signup:hover {
+background: #021d44;
+}
