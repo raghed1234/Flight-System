@@ -13,12 +13,6 @@ function App() {
 
         {/* Sign In page route */}
         <Route path="/signin" element={<Signin />} />
-      </Routes>
-      <Routes>
-        {/* Home page route */}
-        <Route path="/" element={<Home />} />
-
-        {/* Sign Up page route */}
         <Route path="/signup" element={<Signup />} />
       </Routes>
     </Router>
