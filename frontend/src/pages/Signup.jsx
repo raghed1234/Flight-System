@@ -1,17 +1,46 @@
 import React from "react";
+import { useState } from 'react';
+export default function Signup() {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    password: ""
+  });
 
-  export default function Signup() {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost/db-project/backend/api/signup.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      alert(result.message);
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to server");
+    }
+  };
   return (
-    <div className="signin-page">
+    <div className="signin-page" >
       <div className="signin-card">
         <h2 className="signin-title">Create Your Account</h2>
         <p className="signin-subtitle">Join the Flight Management System</p>
 
-        <form className="signin-form">
-          <input type="text" placeholder="Full Name" required />
-          <input type="phone" placeholder="Phone Number" required />
-          <input type="email" placeholder="Email" required />
-          <input type="password" placeholder="Password" required />
+        <form className="signin-form" onSubmit={handleSubmit}>
+          <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
+          <input type="phone" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Email"  value={formData.email} onChange={handleChange} required />
+          <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
 
           <button type="submit">Create Account</button>
         </form>
