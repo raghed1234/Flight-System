@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Signup() {
+  export default function Signup() {
   return (
     <div className="signin-page">
       <div className="signin-card">
@@ -9,10 +9,9 @@ export default function Signup() {
 
         <form className="signin-form">
           <input type="text" placeholder="Full Name" required />
-          <input type="text" placeholder="Username" required />
+          <input type="phone" placeholder="Phone Number" required />
           <input type="email" placeholder="Email" required />
           <input type="password" placeholder="Password" required />
-          <input type="password" placeholder="Confirm Password" required />
 
           <button type="submit">Create Account</button>
         </form>
@@ -20,7 +19,7 @@ export default function Signup() {
         <p className="signin-footer">© 2025 SkyTech Airlines</p>
       </div>
 
-      <style jsx>{`
+      <style jsx="">{`
         .signin-page {
           display: flex;
           justify-content: center;

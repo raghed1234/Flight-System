@@ -6,10 +6,10 @@ export default function SignIn() {
       <div className="signin-card">
         <h2 className="signin-title">Flight Management System</h2>
         <p className="signin-subtitle">Sign in to continue</p>
-        <form className="signin-form">
-          <input type="text" placeholder="Username" required />
-          <input type="password" placeholder="Password" required />
-          <button type="submit">Sign In</button>
+        <form className="signin-form" onSubmit={handleSubmit}>
+        <input name="username" type="text" placeholder="Username" required />
+        <input name="password" type="password" placeholder="Password" required />
+        <button type="submit">Sign In</button>
         </form>
         <p className="signin-footer">© 2025 SkyTech Airlines</p>
       </div>
