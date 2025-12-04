@@ -6,7 +6,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "flightsystem";
+$dbname = "flight_system";
 
 // 1. Connect to database
 $conn = new mysqli($servername, $username, $password, $dbname);

@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 $servername = "localhost";
 $username = "root";
 $password = ""; // default XAMPP password is empty
-$dbname = "flightsystem";
+$dbname = "flight_system";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
