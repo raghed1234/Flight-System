@@ -18,12 +18,10 @@ return (
 
 
 <div className="nav-right">      
-      <Link to="/signin">
-        <button className="signin-btn">Sign In</button>
+      <Link to="/logout">
+        <button className="signin-btn">Log out</button>
       </Link>
-      <Link to="/signup">
-        <button className="signup-btn">Sign Up</button>
-      </Link>
+    
 </div>
 </nav>
 );

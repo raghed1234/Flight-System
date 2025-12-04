@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
+import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [user, setUser] = useState(null);
 
-  // Load user from localStorage when app starts
+  // Load user from localStorage on refresh
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
@@ -16,25 +17,22 @@ function App() {
     }
   }, []);
 
-  // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-  };
-
   return (
     <Router>
-      {/* Routes */}
       <Routes>
-        {/* Public landing page */}
-        <Route path="/" element={<Home />} />
 
-        {/* Login / Signup pages */}
+        {/* DEFAULT PAGE → SIGN IN */}
+        <Route path="/" element={<Signin setUser={setUser} />} />
+
         <Route path="/signin" element={<Signin setUser={setUser} />} />
-        <Route path="/signup" element={<Signup setUser={setUser} />} />
+        <Route path="/signup" element={<Signup />} />
 
-        {/* User dashboard */}
-        <Route path="/dashboard" element={<Dashboard user={user} />} />
+        {/* USER DASHBOARD AFTER LOGIN */}
+        <Route path="/home" element={<Home user={user} />} />
+
+        {/* Home (optional before login or public page) */}
+        <Route path="/home" element={<Home />} />
+
       </Routes>
     </Router>
   );
