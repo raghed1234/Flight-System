@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [user, setUser] = useState(null);
