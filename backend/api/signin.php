@@ -1,41 +1,64 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Methods: POST");
-header("Content-Type: application/json");
 
-$conn = new mysqli("localhost", "root", "", "flightsystem");
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "flightsystem";
+
+// 1. Connect to database
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
-    die(json_encode(["success" => false, "message" => "Connection failed: " . $conn->connect_error]));
+    die(json_encode(["success" => false, "message" => "Connection failed"]));
 }
 
+// 2. Get JSON input from React
 $data = json_decode(file_get_contents("php://input"), true);
 
-$email    = $data["email"] ?? null;
-$password = $data["password"] ?? null;
-
-if (!$email || !$password) {
-    echo json_encode(["success" => false, "message" => "Missing required fields"]);
+// 3. Validate input
+if (!isset($data['email'], $data['password'])) {
+    echo json_encode(["success" => false, "message" => "Missing email or password"]);
     exit;
 }
 
-$sql = "SELECT * FROM users WHERE email = ?";
-$stmt = $conn->prepare($sql);
+$email = $data['email'];
+$password = $data['password'];
+
+// 4. Find user by email
+$stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
-    if (password_verify($password, $user["password"])) {
-        echo json_encode(["success" => true, "message" => "Login successful", "user" => $user]);
-    } else {
-        echo json_encode(["success" => false, "message" => "Incorrect password"]);
-    }
-} else {
+// 5. If user not found
+if ($result->num_rows === 0) {
     echo json_encode(["success" => false, "message" => "User not found"]);
+    exit;
 }
+
+// 6. Fetch user data
+$user = $result->fetch_assoc();
+
+// 7. Check password (plain text for now)
+if ($user['password'] !== $password) {
+    echo json_encode(["success" => false, "message" => "Incorrect password"]);
+    exit;
+}
+
+// 8. Success — send back user info
+echo json_encode([
+    "success" => true,
+    "message" => "Login successful",
+    "user" => [
+        "id" => $user['user_id'],
+        "name" => $user['name'],
+        "email" => $user['email'],
+        "phone" => $user['phone']
+    ]
+]);
 
 $stmt->close();
 $conn->close();
