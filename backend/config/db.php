@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 $host = "localhost";      // XAMPP default
 $user = "root";           // MySQL default user
 $pass = "";               // Leave empty if no password
-$dbname = "flightsystem"; // Your database name
+$dbname = "flight_system"; // Your database name
 
 // ===== Create connection =====
 $conn = new mysqli($host, $user, $pass, $dbname);
