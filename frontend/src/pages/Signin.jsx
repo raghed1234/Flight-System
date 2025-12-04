@@ -1,14 +1,59 @@
-import React from "react";
 
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 export default function SignIn() {
+   const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate(); // used to redirect
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        "http://localhost/db-project/backend/api/signin.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(result.message);
+        // Redirect to home/dashboard
+        navigate("/home"); // change to your home route
+      } else {
+        alert(result.message);
+        // If user not found → redirect to signup
+        if (result.message === "User not found") {
+          navigate("/signup");
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to server");
+    }
+  };
+
   return (
     <div className="signin-page">
       <div className="signin-card">
         <h2 className="signin-title">Flight Management System</h2>
         <p className="signin-subtitle">Sign in to continue</p>
         <form className="signin-form" onSubmit={handleSubmit}>
-        <input name="username" type="text" placeholder="Username" required />
-        <input name="password" type="password" placeholder="Password" required />
+        <input name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+        <input name="password" type="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
         <button type="submit">Sign In</button>
         </form>
         <p className="signin-footer">© 2025 SkyTech Airlines</p>
