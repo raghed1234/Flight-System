@@ -52,12 +52,13 @@ if ($user['password'] !== $password) {
 echo json_encode([
     "success" => true,
     "message" => "Login successful",
-    "user" => [
+        "user" => [
         "id" => $user['user_id'],
-        "name" => $user['name'],
+        "fname" => $user['fname'],
+        "lname" => $user['lname'],
         "email" => $user['email'],
-        "phone" => $user['phone']
-    ]
+        "role" => $user['role']
+        ]
 ]);
 
 $stmt->close();
