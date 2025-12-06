@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
+// New pages
+import About from "./pages/About";
+import Booking from "./pages/Booking";
+import Contact from "./pages/Contact";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -20,7 +24,10 @@ function App() {
       <Routes>
 
         {/* DEFAULT PAGE → SIGN IN */}
-        <Route path="/" element={<Signin setUser={setUser} />} />
+          <Route
+          path="/"
+           element={user ? <Navigate to="/home" /> : <Signin setUser={setUser} />}
+          />
 
         <Route path="/signin" element={<Signin setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
@@ -30,6 +37,12 @@ function App() {
 
         {/* Home (optional before login or public page) */}
         <Route path="/home" element={<Home />} />
+
+              {/* NEW ROUTES */}
+        <Route path="/about" element={<About />} />        {/* About page */}
+        <Route path="/booking" element={<Booking />} />    {/* Booking page */}
+        <Route path="/contact" element={<Contact />} />    {/* Contact page */}
+
 
       </Routes>
     </Router>
