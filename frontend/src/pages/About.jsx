@@ -1,3 +1,3 @@
 export default function About() {
-  return <h1>About Page for SkyMatrix</h1>;
+  return <h1>About Page for SkyMatrix website</h1>;
 }
