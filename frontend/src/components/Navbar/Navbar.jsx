@@ -3,27 +3,31 @@ import './Navbar.css';
 import { Link } from "react-router-dom";
 
 
-function Navbar() {
+function Navbar({ user, setUser }) {
 return (
 <nav className="nav-container">
 <div className="nav-left">SkyMatrix</div>
 
 
-<ul className="nav-center">
-<li>Home</li>
-<li>About</li>
-<li>Booking</li>
-<li>Contact</li>
-</ul>
+     <ul className="nav-center">
+        <li>
+          <Link to="/home">Home</Link>
+        </li>
+        <li>
+          <Link to="/about">About</Link>
+        </li>
+        <li>
+          <Link to="/booking">Booking</Link>
+        </li>
+        <li>
+          <Link to="/contact">Contact</Link>
+        </li>
+      </ul>
 
-
-<div className="nav-right">      
-      <Link to="/logout">
-        <button className="signin-btn">Log out</button>
+      <Link to="/signin">
+        <button className="log-out">Log out</button>
       </Link>
-    
-</div>
-</nav>
+      </nav>
 );
 }
 
