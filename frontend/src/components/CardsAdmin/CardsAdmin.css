@@ -1,0 +1,72 @@
+.admin-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: center;
+  background-color: #f5f7fa;
+  min-height: calc(100vh - 100px);
+}
+
+.admin-wrapper .card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.admin-wrapper .card-link:hover {
+  transform: translateY(-5px);
+}
+
+/* Style the Card variants based on your Card.css */
+.card-passenger {
+  border-left: 4px solid #3498db;
+  background: linear-gradient(135deg, #e8f4fc 0%, #ffffff 100%);
+}
+
+.card-passenger:hover {
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
+}
+
+.card-crew {
+  border-left: 4px solid #2ecc71;
+  background: linear-gradient(135deg, #e8f8ef 0%, #ffffff 100%);
+}
+
+.card-crew:hover {
+  box-shadow: 0 8px 25px rgba(46, 204, 113, 0.2);
+}
+
+.card-admin {
+  border-left: 4px solid #9b59b6;
+  background: linear-gradient(135deg, #f4e8f8 0%, #ffffff 100%);
+}
+
+.card-admin:hover {
+  box-shadow: 0 8px 25px rgba(155, 89, 182, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .admin-wrapper {
+    gap: 15px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-wrapper {
+    padding: 15px;
+    gap: 12px;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .admin-wrapper .card-link {
+    width: 100%;
+    max-width: 300px;
+  }
+}

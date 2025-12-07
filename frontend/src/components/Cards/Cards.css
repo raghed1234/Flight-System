@@ -1,0 +1,361 @@
+/* src/components/Card/Card.css */
+.card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    border: 2px solid transparent;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    min-height: 120px;
+    position: relative;
+    overflow: hidden;
+    width: 380px;
+    height: 100px;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: var(--blue-primary);
+    transition: all var(--transition-normal);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--blue-light);
+}
+
+.card:hover::before {
+    width: 8px;
+    background: var(--yellow-primary);
+}
+
+.card:active {
+    transform: translateY(-2px);
+}
+
+/* Card Variants with your theme */
+.card-default {
+    background: var(--white);
+}
+
+.card-primary {
+    background: var(--blue-gradient);
+    color: var(--white);
+}
+
+.card-primary::before {
+    background: var(--yellow-primary);
+    width: 8px;
+}
+
+.card-success {
+    background: var(--white);
+}
+
+.card-success::before {
+    background: #10b981;
+}
+
+.card-warning {
+    background: var(--white);
+}
+
+.card-warning::before {
+    background: var(--yellow-primary);
+}
+
+.card-danger {
+    background: var(--white);
+}
+
+.card-danger::before {
+    background: #ef4444;
+}
+
+/* Passenger, Crew, Admin Variants */
+.card-passenger {
+    background: var(--white);
+    border: 2px solid #dbeafe;
+}
+
+.card-passenger::before {
+    background: #3b82f6;
+}
+
+.card-crew {
+    background: var(--white);
+    border: 2px solid #d1fae5;
+}
+
+.card-crew::before {
+    background: #10b981;
+}
+
+.card-admin {
+    background: var(--white);
+    border: 2px solid #ede9fe;
+}
+
+.card-admin::before {
+    background: #8b5cf6;
+}
+
+/* Card Icon Styles */
+.card-icon {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: var(--blue-light);
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+    transition: all var(--transition-normal);
+}
+
+.card:hover .card-icon {
+    background: var(--yellow-light);
+    transform: scale(1.05);
+}
+
+.card-primary .card-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+}
+
+.card-primary:hover .card-icon {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.card-passenger .card-icon {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.card-crew .card-icon {
+    background: #d1fae5;
+    color: #047857;
+}
+
+.card-admin .card-icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+/* Card Content - FIXED TEXT COLORS */
+.card-content {
+    flex: 1;
+}
+
+.card-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b; /* Dark blue-gray for best contrast */
+    transition: color var(--transition-normal);
+}
+
+.card:hover .card-title {
+    color: var(--blue-primary);
+}
+
+/* Primary variant text */
+.card-primary .card-title {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.card-primary:hover .card-title {
+    color: #ffffff !important;
+}
+
+/* Variant-specific title colors */
+.card-passenger .card-title {
+    color: #1e40af; /* Dark blue */
+}
+
+.card-crew .card-title {
+    color: #065f46; /* Dark green */
+}
+
+.card-admin .card-title {
+    color: #5b21b6; /* Dark purple */
+}
+
+.card-success .card-title {
+    color: #065f46; /* Dark green */
+}
+
+.card-warning .card-title {
+    color: #92400e; /* Dark amber */
+}
+
+.card-danger .card-title {
+    color: #991b1b; /* Dark red */
+}
+
+/* Card Description - FIXED TEXT COLORS */
+.card-description {
+    margin: 0;
+    color: #475569; /* Medium gray for good readability */
+    font-size: 0.9rem;
+    line-height: 1.5;
+    transition: color var(--transition-normal);
+}
+
+.card:hover .card-description {
+    color: #334155; /* Slightly darker on hover */
+}
+
+/* Primary variant description */
+.card-primary .card-description {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.card-primary:hover .card-description {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Variant-specific description colors */
+.card-passenger .card-description {
+    color: #4b5563;
+}
+
+.card-crew .card-description {
+    color: #4b5563;
+}
+
+.card-admin .card-description {
+    color: #4b5563;
+}
+
+/* Card Arrow */
+.card-arrow {
+    font-size: 1.5rem;
+    color: var(--blue-primary);
+    opacity: 0.7;
+    transition: all var(--transition-normal);
+    align-self: center;
+    transform: translateX(-5px);
+}
+
+.card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--yellow-dark);
+}
+
+/* Arrow colors for different variants */
+.card-primary .card-arrow {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.card-primary:hover .card-arrow {
+    color: var(--yellow-light) !important;
+}
+
+.card-passenger .card-arrow {
+    color: #3b82f6;
+}
+
+.card-crew .card-arrow {
+    color: #10b981;
+}
+
+.card-admin .card-arrow {
+    color: #8b5cf6;
+}
+
+/* Additional Yellow Accent Variant */
+.card-accent {
+    background: var(--white);
+    border: 2px solid var(--yellow-light);
+}
+
+.card-accent::before {
+    background: var(--yellow-gradient);
+}
+
+.card-accent:hover {
+    border-color: var(--yellow-primary);
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.15);
+}
+
+.card-accent:hover .card-icon {
+    background: var(--yellow-light);
+}
+
+.card-accent .card-arrow {
+    color: var(--yellow-dark);
+}
+
+/* Focus states for accessibility */
+.card:focus {
+    outline: 2px solid var(--blue-primary);
+    outline-offset: 2px;
+}
+
+/* Compact card variant */
+.card-compact {
+    padding: 1rem;
+    min-height: 100px;
+    gap: 0.75rem;
+}
+
+.card-compact .card-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+}
+
+.card-compact .card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.card-compact .card-description {
+    font-size: 0.85rem;
+}
+
+/* Hover effects for passenger, crew, admin variants */
+.card-passenger:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
+.card-crew:hover {
+    border-color: #10b981;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+}
+
+.card-admin:hover {
+    border-color: #8b5cf6;
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+}
+
+.card-passenger:hover .card-icon {
+    background: #bfdbfe;
+    color: #1e40af;
+}
+
+.card-crew:hover .card-icon {
+    background: #a7f3d0;
+    color: #065f46;
+}
+
+.card-admin:hover .card-icon {
+    background: #ddd6fe;
+    color: #5b21b6;
+}
