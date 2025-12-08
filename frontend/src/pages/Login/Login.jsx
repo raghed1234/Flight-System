@@ -72,7 +72,7 @@ const Login = ({ setUser }) => {
       setLoading(true);
       setError('');
       
-      const response = await fetch('http://localhost/db-project/Flight-System/backend/api/login.php', {
+      const response = await fetch('http://localhost/db-project/backend/api/login.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

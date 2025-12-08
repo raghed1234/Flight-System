@@ -84,7 +84,7 @@ const Signup = () => {
       setLoading(true);
       setError('');
       
-      const response = await fetch('http://localhost/db-project/Flight-System/backend/api/signup.php', {
+      const response = await fetch('http://localhost/db-project/backend/api/signup.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

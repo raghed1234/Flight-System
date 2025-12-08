@@ -20,7 +20,7 @@ const CrudAdmins = () => {
   const [deletingId, setDeletingId] = useState(null);
 
   // Base URL for API calls
-  const API_BASE_URL = 'http://localhost/db-project/Flight-System/backend/api/';
+  const API_BASE_URL = 'http://localhost/db-projectbackend/api/';
 
   useEffect(() => {
     fetchAdmins();
