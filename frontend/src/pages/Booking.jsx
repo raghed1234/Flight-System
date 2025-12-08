@@ -78,7 +78,7 @@ function Booking() {
 
  const handleBookFlight = async (flightId) => {
     try {
-        const userId = 1; // Hardcode for testing
+        const userId = prompt("Enter your user ID:", "1") || "1";
         const seatNumber = `${Math.floor(Math.random() * 30) + 1}${'ABCDEF'[Math.floor(Math.random() * 6)]}`;
         
         console.log('Attempting to book flight:', flightId, 'Seat:', seatNumber);

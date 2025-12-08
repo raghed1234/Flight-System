@@ -146,7 +146,7 @@ function bookFlight($conn) {
                 "post_data" => $_POST
             ]
         ]);
-        return;
+     return;
     }
     
     try {
