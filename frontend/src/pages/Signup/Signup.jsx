@@ -115,7 +115,7 @@ const Signup = () => {
         
         // Redirect to login after 3 seconds
         setTimeout(() => {
-          navigate('/login');
+          navigate('/');
         }, 3000);
         
       } else {
@@ -130,7 +130,7 @@ const Signup = () => {
   };
   
   const handleLoginRedirect = () => {
-    navigate('/login');
+    navigate('/');
   };
   
   return (

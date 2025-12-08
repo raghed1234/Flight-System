@@ -1,17 +1,24 @@
 <?php
-
 session_start();
+// Allow multiple ports
+$allowed_origins = [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:5176'
+];
 
-// ===== CORS Headers =====
-$allowed_origins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, $allowed_origins)) {
     header("Access-Control-Allow-Origin: " . $origin);
 }
-header("Access-Control-Allow-Credentials: true");
+
 header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
+
+
 
 // ===== Handle preflight requests =====
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
@@ -22,24 +29,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 // ===== Only allow POST =====
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(["success" => false, "message" => "Method not allowed"]);
+    echo json_encode(["status" => "error", "message" => "Method not allowed"]);
     exit();
 }
 
-// ===== Include database connection FROM YOUR db.php =====
+// ===== Include database connection =====
 require_once __DIR__ . "/../config/db.php";
 
 try {
     // ===== Get JSON input =====
     $input = file_get_contents('php://input');
     if (empty($input)) {
-        echo json_encode(["success" => false, "message" => "No data received"]);
+        echo json_encode(["status" => "error", "message" => "No data received"]);
         exit();
     }
     
     $data = json_decode($input, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
-        echo json_encode(["success" => false, "message" => "Invalid JSON data"]);
+        echo json_encode(["status" => "error", "message" => "Invalid JSON data"]);
         exit();
     }
     
@@ -47,7 +54,7 @@ try {
     $password = trim($data["password"] ?? "");
 
     if (empty($email) || empty($password)) {
-        echo json_encode(["success" => false, "message" => "Email and password are required"]);
+        echo json_encode(["status" => "error", "message" => "Email and password are required"]);
         exit();
     }
 
@@ -64,11 +71,14 @@ try {
     $result = $stmt->get_result();
     
     if ($result->num_rows === 0) {
-        echo json_encode(["success" => false, "message" => "Invalid email or password"]);
+        echo json_encode(["status" => "error", "message" => "Invalid email or password"]);
+        $stmt->close();
+        $conn->close();
         exit();
     }
     
     $user = $result->fetch_assoc();
+    $stmt->close();
     
     // ===== Verify password =====
     $passwordValid = false;
@@ -83,20 +93,24 @@ try {
     }
     
     if (!$passwordValid) {
-        echo json_encode(["success" => false, "message" => "Invalid email or password"]);
+        echo json_encode(["status" => "error", "message" => "Invalid email or password"]);
+        $conn->close();
         exit();
     }
-    
-    // ===== Get additional info based on role =====
+
+    $user_id = $user["user_id"];
     $role = $user["role"];
     $additional_info = [];
     
+    // ===== Get additional info based on role =====
     if ($role === 'admin') {
         $admin_sql = "SELECT admin_id FROM Admin WHERE admin_id = ?";
         $admin_stmt = $conn->prepare($admin_sql);
-        $admin_stmt->bind_param("i", $user["user_id"]);
+        $admin_stmt->bind_param("i", $user_id);
         $admin_stmt->execute();
-        if ($admin_stmt->get_result()->num_rows > 0) {
+        $admin_result = $admin_stmt->get_result();
+        
+        if ($admin_result->num_rows > 0) {
             $additional_info['is_admin'] = true;
         }
         $admin_stmt->close();
@@ -104,9 +118,10 @@ try {
     } elseif ($role === 'crew') {
         $crew_sql = "SELECT crew_id, rank, flight_hours, phone_number FROM Crew WHERE crew_id = ?";
         $crew_stmt = $conn->prepare($crew_sql);
-        $crew_stmt->bind_param("i", $user["user_id"]);
+        $crew_stmt->bind_param("i", $user_id);
         $crew_stmt->execute();
         $crew_result = $crew_stmt->get_result();
+        
         if ($crew_data = $crew_result->fetch_assoc()) {
             $additional_info = $crew_data;
         }
@@ -115,9 +130,10 @@ try {
     } elseif ($role === 'passenger') {
         $passenger_sql = "SELECT passenger_id, phone_number FROM Passenger WHERE passenger_id = ?";
         $passenger_stmt = $conn->prepare($passenger_sql);
-        $passenger_stmt->bind_param("i", $user["user_id"]);
+        $passenger_stmt->bind_param("i", $user_id);
         $passenger_stmt->execute();
         $passenger_result = $passenger_stmt->get_result();
+        
         if ($passenger_data = $passenger_result->fetch_assoc()) {
             $additional_info = $passenger_data;
         }
@@ -125,8 +141,16 @@ try {
     }
 
     // ===== Prepare user data =====
-    unset($user["password"]); // Remove password from response
-    $user_data = array_merge($user, $additional_info);
+    $user_data = [
+        'id' => $user["user_id"],
+        'fname' => $user["fname"],
+        'lname' => $user["lname"],
+        'email' => $user["email"],
+        'role' => $role
+    ];
+    
+    // Merge additional info (like phone_number, etc.)
+    $user_data = array_merge($user_data, $additional_info);
     
     // ===== Store in session =====
     $_SESSION['user'] = $user_data;
@@ -134,12 +158,12 @@ try {
 
     // ===== Success response =====
     echo json_encode([
-        "success" => true,
+        "status" => "success",
         "message" => "Login successful",
-        "data" => $user_data
+        "user" => $user_data  // This should be 'user' not 'data'
     ]);
     
-    $stmt->close();
+    // ===== Clean up =====
     $conn->close();
     
 } catch (Exception $e) {
@@ -149,11 +173,15 @@ try {
     
     http_response_code(500);
     echo json_encode([
-        "success" => false, 
+        "status" => "error", 
         "message" => "Server error: " . $e->getMessage()
     ]);
     
     // Log error for debugging
     error_log("Login Error: " . $e->getMessage() . " at " . date('Y-m-d H:i:s'));
+    
+    if (isset($conn) && $conn) {
+        $conn->close();
+    }
 }
 ?>

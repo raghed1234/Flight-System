@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-const Login = () => {
+const Login = ({ setUser }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -13,20 +13,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   
-  // Check if already logged in
-  useEffect(() => {
-    const user = localStorage.getItem('user') || sessionStorage.getItem('user');
-    if (user) {
-      try {
-        const userData = JSON.parse(user);
-        redirectBasedOnRole(userData.role);
-      } catch (e) {
-        // Clear invalid data
-        localStorage.removeItem('user');
-        sessionStorage.removeItem('user');
-      }
-    }
-  }, []);
+  // REMOVED the auto-redirect useEffect!
+  // Login page should always show, let App.jsx handle redirects
   
   const redirectBasedOnRole = (role) => {
     switch (role) {
@@ -40,7 +28,7 @@ const Login = () => {
         navigate('/home');
         break;
       default:
-        navigate('/');
+        navigate('/home');
     }
   };
   
@@ -89,7 +77,7 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // IMPORTANT: For session cookies
+        credentials: 'include',
         body: JSON.stringify({
           email: formData.email,
           password: formData.password
@@ -97,22 +85,24 @@ const Login = () => {
       });
       
       const data = await response.json();
+      console.log('Login response:', data);
       
-      if (data.success) {
+      if (data.status === 'success') {
         // Store user data
         const storage = rememberMe ? localStorage : sessionStorage;
-        storage.setItem('user', JSON.stringify(data.data));
+        storage.setItem('user', JSON.stringify(data.user));
+        
+        // Update user state in App.jsx
+        if (setUser) {
+          setUser(data.user);
+        }
         
         // Show success message briefly
         setError('Login successful! Redirecting...');
         
         // Redirect based on role
         setTimeout(() => {
-          if (data.data.role) {
-            redirectBasedOnRole(data.data.role);
-          } else {
-            navigate('/');
-          }
+          redirectBasedOnRole(data.user.role);
         }, 1000);
         
       } else {
