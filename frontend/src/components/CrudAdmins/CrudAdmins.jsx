@@ -20,7 +20,7 @@ const CrudAdmins = () => {
   const [deletingId, setDeletingId] = useState(null);
 
   // Base URL for API calls
-  const API_BASE_URL = 'http://localhost/db-projectbackend/api/';
+  const API_BASE_URL = 'http://localhost/db-project/backend/api/';
 
   useEffect(() => {
     fetchAdmins();
@@ -266,18 +266,24 @@ const CrudAdmins = () => {
         <h2 className="admins-title">Manage Administrators</h2>
         <div className="header-actions">
           <button 
-            onClick={() => setShowForm(!showForm)}
-            className={`admins-btn ${showForm ? 'admins-btn-secondary' : 'admins-btn-primary'}`}
-          >
-            {showForm ? 'Cancel' : '➕ Add New Admin'}
-          </button>
-          <button 
-            onClick={fetchAdmins}
-            className="admins-btn admins-btn-refresh"
-            title="Refresh list"
-          >
-            🔄 Refresh
-          </button>
+           onClick={() => {
+           if (!showForm) {
+              // When opening form for NEW admin, ensure editingAdmin is null
+              setEditingAdmin(null);
+              setFormData({
+              email: '',
+              password: '',
+              fname: '',
+              lname: ''
+              });
+           }
+             setShowForm(!showForm);
+           }}
+           className={`admins-btn ${showForm ? 'admins-btn-secondary' : 'admins-btn-primary'}`}
+         >
+           {showForm ? 'Cancel' : '➕ Add New Admin'}
+         </button>
+        
         </div>
       </div>
 
