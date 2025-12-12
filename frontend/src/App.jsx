@@ -6,6 +6,11 @@ import Home from "./pages/Home";
 import Admin from "./pages/Admin/Admin";
 import Booking from "./pages/Booking";
 import AdminList from "./components/CrudAdmins/CrudAdmins"
+import PassengersList from "./components/CrudPassengers/CrudPassengers"
+import CrewsList from "./components/CrudCrews/CrudCrews"
+import FlightList from "./components/CrudFlights/CrudFlights"
+import AirportList from "./components/CrudAirports/CrudAirports"
+import AircraftList from "./components/CrudAircrafts/CrudAircrafts"
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,6 +33,13 @@ function App() {
         <Route path="/admin" element={<Admin/>} />
         {/* Admin Management Page (when clicking on card) */}
         <Route path="/admin/manageAdmins" element={<AdminList />} />
+        <Route path="/admin/managePassengers" element={<PassengersList/>} />
+        <Route path="/admin/manageCrews" element={<CrewsList/>} />
+        <Route path="/admin/manageFlights" element={<FlightList/>} />
+        <Route path="/admin/manageAirports" element={<AirportList/>} />
+        <Route path="/admin/manageAircrafts" element={<AircraftList/>} />
+
+
         <Route path="/booking" element={<Booking />} />
         <Route path="/signup" element={<Signup />} />
 
