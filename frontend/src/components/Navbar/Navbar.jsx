@@ -11,16 +11,16 @@ return (
 
      <ul className="nav-center">
         <li>
-          <Link to="/home">Home</Link>
+          <Link to="home">Home</Link>
         </li>
         <li>
-          <Link to="/about">About</Link>
+          <Link to="about">About</Link>
         </li>
         <li>
-          <Link to="/booking">Booking</Link>
+          <Link to="booking">Booking</Link>
         </li>
         <li>
-          <Link to="/contact">Contact</Link>
+          <Link to="contact">Contact</Link>
         </li>
       </ul>
 
