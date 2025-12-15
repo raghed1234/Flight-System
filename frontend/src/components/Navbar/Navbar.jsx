@@ -24,7 +24,7 @@ return (
         </li>
       </ul>
 
-      <Link to="/signin">
+      <Link to="/">
         <button className="log-out">Log out</button>
       </Link>
       </nav>

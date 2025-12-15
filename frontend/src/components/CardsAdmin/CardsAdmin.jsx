@@ -62,6 +62,15 @@ const CardsAdmin = () => {
           variant="aircraft"
         />
       </Link>
+      <Link to="manageFlights_Crews" className="card-link">
+       {" "}
+        <Card
+          title="Manage Flights_Crews"
+          description="View, add, update and delete flights_crews"
+          icon="🛫"
+          variant="flights_Crews"
+        />
+      </Link>
     </div>
   )
 }
