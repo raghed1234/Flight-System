@@ -40,15 +40,28 @@ function Booking() {
 
     const fetchMyBookings = async () => {
         try {
-            // Assuming user_id is stored in localStorage or context
-            const userId = localStorage.getItem('user_id') || 1;
-            const response = await fetch(`http://localhost/db-project/backend/api/booking.php?action=getBookings&user_id=${userId}`);
+            // Get the user ID from localStorage or default to '1'
+            const userId = localStorage.getItem('current_user_id') || '1';
+            
+            console.log("📌 Fetching bookings for user ID:", userId);
+            
+            const response = await fetch(
+                `http://localhost/db-project/backend/api/booking.php?action=getBookings&user_id=${userId}`
+            );
             const data = await response.json();
+            
+            console.log("📋 Bookings data:", data);
+            console.log("📋 Number of bookings:", data.data?.length || 0);
+            
             if (data.success) {
-                setMyBookings(data.data);
+                setMyBookings(data.data || []);
+            } else {
+                console.error("❌ API returned success=false:", data.message);
+                setMyBookings([]);
             }
         } catch (error) {
-            console.error('Error fetching bookings:', error);
+            console.error('❌ Error fetching bookings:', error);
+            setMyBookings([]);
         }
     };
 
@@ -76,42 +89,49 @@ function Booking() {
         setLoading(false);
     };
 
- const handleBookFlight = async (flightId) => {
-    try {
-        const userId = prompt("Enter your user ID:", "1") || "1";
-        const seatNumber = `${Math.floor(Math.random() * 30) + 1}${'ABCDEF'[Math.floor(Math.random() * 6)]}`;
-        
-        console.log('Attempting to book flight:', flightId, 'Seat:', seatNumber);
-        
-        // Use FormData - PHP handles this better
-        const formData = new FormData();
-        formData.append('action', 'bookFlight');
-        formData.append('user_id', userId.toString());
-        formData.append('flight_id', flightId.toString());
-        formData.append('seat_number', seatNumber);
-        
-        const response = await fetch('http://localhost/db-project/backend/api/booking.php', {
-            method: 'POST',
-            // NO headers for FormData - browser sets them automatically
-            body: formData
-        });
-        
-        console.log('Response status:', response.status);
-        const data = await response.json();
-        console.log('Response data:', data);
-        
-        if (data.success) {
-            alert(`Booked! Seat: ${seatNumber}, Booking ID: ${data.booking_id}`);
-            fetchMyBookings();
-        } else {
-            alert('Failed: ' + data.message);
+    const handleBookFlight = async (flightId) => {
+        try {
+            // Get user ID from your auth system (or prompt for testing)
+            const userId = prompt("Enter your user ID:", "2");
+            
+            if (!userId) return; // User cancelled
+            
+            // Store the user ID
+            localStorage.setItem('current_user_id', userId);
+            
+            console.log("📌 Booking flight for user ID:", userId);
+            
+            // Make the booking request
+            const response = await fetch('http://localhost/db-project/backend/api/booking.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'bookFlight',
+                    user_id: userId,
+                    flight_id: flightId
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                alert(`✅ Booked successfully for user ${userId}!`);
+                
+                // Refresh bookings to show the new booking
+                await fetchMyBookings();
+                
+                // Switch to bookings tab
+                setActiveTab('bookings');
+            } else {
+                alert(`❌ Booking failed: ${data.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error('Error booking flight:', error);
+            alert('❌ Error booking flight. Please try again.');
         }
-        
-    } catch (error) {
-        console.error('Full error:', error);
-        alert('Network error. Check console.');
-    }
-};
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
