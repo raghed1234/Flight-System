@@ -11,12 +11,12 @@ const CardsAdmin = () => {
         <Card
           title="Manage Passengers"
           description="View, add, update and delete passengers"
-          icon="👤"
+          icon="🧑‍🤝‍🧑"
           variant="passenger"
         />
       </Link>
       
-      <Link to="manageCrew" className="card-link">
+      <Link to="manageCrews" className="card-link">
        {" "}
         <Card
           title="Manage Crew"
@@ -33,6 +33,42 @@ const CardsAdmin = () => {
           description="View, add, update and delete admins"
           icon="👨‍💼"
           variant="admin"
+        />
+      </Link>
+      <Link to="manageFlights" className="card-link">
+       {" "}
+        <Card
+          title="Manage Flights"
+          description="View, add, update and delete flights"
+          icon="✈️"
+          variant="flight"
+        />
+      </Link>
+      <Link to="manageAirports" className="card-link">
+       {" "}
+        <Card
+          title="Manage Airports"
+          description="View, add, update and delete airports"
+          icon="🏢"
+          variant="airport"
+        />
+      </Link>
+      <Link to="manageAircrafts" className="card-link">
+       {" "}
+        <Card
+          title="Manage Aircrafts"
+          description="View, add, update and delete aircrafts"
+          icon="🛫"
+          variant="aircraft"
+        />
+      </Link>
+      <Link to="manageFlights_Crews" className="card-link">
+       {" "}
+        <Card
+          title="Manage Flights_Crews"
+          description="View, add, update and delete flights_crews"
+          icon="🛫"
+          variant="flights_Crews"
         />
       </Link>
     </div>

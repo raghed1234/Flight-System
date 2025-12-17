@@ -1,6 +1,6 @@
 import React from 'react';
 import './Body.css';
-import myImage from '../../img/aiplane.webp';
+import myImage from '../../assets/airplane.webp';
 
 function Body() {
 return (

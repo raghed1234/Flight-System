@@ -1,10 +1,10 @@
-import "./Admin.css";
+import "./Crew.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react"; // ADD THIS
-import CardsAdmin from "../../components/CardsAdmin/CardsAdmin";
+import CardsCrew from "../../components/CardsCrew/CardsCrew";
 
-const Admin = () => {
-  const navigate = useNavigate();
+const Crew = () => {
+    const navigate = useNavigate();
   const [isChecking, setIsChecking] = useState(true); // ADD THIS
 
   // 🔴 ADD THIS EFFECT - IMMEDIATE CHECK
@@ -20,10 +20,10 @@ const Admin = () => {
         });
         
         const data = await response.json();
-        console.log("🛑 ADMIN PAGE: Auth result:", data);
+        console.log("🛑 Crew PAGE: Auth result:", data);
         
-        if (!data.authenticated || data.user.role !== 'admin') {
-          console.log("🛑 ADMIN PAGE: NOT AUTHORIZED! Redirecting...");
+        if (!data.authenticated || data.user.role !== 'crew') {
+          console.log("🛑 Crew PAGE: NOT AUTHORIZED! Redirecting...");
           // Use window.location for FORCE redirect
           window.location.href = '/';
           return;
@@ -64,25 +64,24 @@ const Admin = () => {
         fontSize: '20px',
         fontWeight: 'bold'
       }}>
-        🔐 Verifying admin access...
+        🔐 Verifying crew access...
       </div>
     );
   }
-
   return (
     <>
       <div className="admin-super-wrapper">
         <div className="admin-header">
-          <h1>Admin Board</h1>
-          <button className="log-out-btn" onClick={handleLogout}>
-            Log out
-          </button>
+          <h1>Crew Page</h1>
+            <button className="log-out-btn" onClick={handleLogout}>
+              Log out
+            </button>
         </div>
         
-        <CardsAdmin />
+        <CardsCrew />
       </div>
     </>
   );
 };
 
-export default Admin;
+export default Crew;
