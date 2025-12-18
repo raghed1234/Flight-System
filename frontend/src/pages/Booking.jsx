@@ -90,48 +90,49 @@ function Booking() {
     };
 
     const handleBookFlight = async (flightId) => {
-        try {
-            // Get user ID from your auth system (or prompt for testing)
-            const userId = prompt("Enter your user ID:", "2");
-            
-            if (!userId) return; // User cancelled
-            
-            // Store the user ID
-            localStorage.setItem('current_user_id', userId);
-            
-            console.log("📌 Booking flight for user ID:", userId);
-            
-            // Make the booking request
-            const response = await fetch('http://localhost/db-project/backend/api/booking.php', {
+    try {
+        const user = JSON.parse(
+            localStorage.getItem('user') || sessionStorage.getItem('user')
+        );
+
+        if (!user || !user.id) {
+            alert("❌ Please login first");
+            return;
+        }
+
+        const userId = user.id;
+
+        const response = await fetch(
+            'http://localhost/db-project/backend/api/booking.php',
+            {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     action: 'bookFlight',
                     user_id: userId,
                     flight_id: flightId
                 })
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                alert(`✅ Booked successfully for user ${userId}!`);
-                
-                // Refresh bookings to show the new booking
-                await fetchMyBookings();
-                
-                // Switch to bookings tab
-                setActiveTab('bookings');
-            } else {
-                alert(`❌ Booking failed: ${data.message || 'Unknown error'}`);
             }
-        } catch (error) {
-            console.error('Error booking flight:', error);
-            alert('❌ Error booking flight. Please try again.');
+        );
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert("✅ Flight booked successfully!");
+            fetchMyBookings();
+            setActiveTab('bookings');
+        } else {
+            alert(`❌ Booking failed: ${data.message}`);
         }
-    };
+
+    } catch (error) {
+        console.error("Booking error:", error);
+        alert("❌ Error booking flight");
+    }
+};
+
+
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
