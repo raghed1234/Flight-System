@@ -209,18 +209,7 @@ function Booking() {
                                     />
                                 </div>
                                 
-                                <div className="form-group">
-                                    <label>Number Of Passengers</label>
-                                    <select 
-                                        name="passengers"
-                                        value={searchParams.passengers}
-                                        onChange={handleInputChange}
-                                    >
-                                        {[1,2,3,4,5,6].map(num => (
-                                            <option key={num} value={num}>{num}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                             
                             </div>
                             
                             <div className="form-row">
